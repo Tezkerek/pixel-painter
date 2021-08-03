@@ -1,8 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import './App.css';
-import { PixelEditor } from './PixelEditor';
-
+import "./App.css";
+import { PixelEditor } from "./PixelEditor";
 
 class App extends React.Component {
   render() {

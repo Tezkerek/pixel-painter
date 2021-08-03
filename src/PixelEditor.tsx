@@ -16,7 +16,6 @@ export class PixelEditor extends React.Component<
 
   @boundMethod
   handleValuesChange(vals: ControlValues) {
-    // console.log({ state: this.state, vals });
     this.setState((current) => ({ ...current, ...vals }));
   }
 
