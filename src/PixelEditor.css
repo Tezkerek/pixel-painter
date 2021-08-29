@@ -1,0 +1,13 @@
+.PixelEditor {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.PixelCanvas {
+  flex-grow: 3;
+}
+
