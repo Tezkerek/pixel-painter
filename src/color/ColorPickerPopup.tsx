@@ -3,7 +3,7 @@ import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 
 import "./ColorPickerPopup.css";
-import useOutsideClick from "./hooks/useOutsideClick";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 export function ColorPickerPopup(props: Props) {
   const [color, setColor] = useColor("hex", props.color);

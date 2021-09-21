@@ -1,8 +1,8 @@
 import { boundMethod } from "autobind-decorator";
 import React from "react";
 import "react-color-palette/lib/css/styles.css";
-import { ColorButton, Ref as ColorButtonRef } from "./ColorButton";
-import { ColorPickerPopup } from "./ColorPickerPopup";
+import { ColorButton, Ref as ColorButtonRef } from "../color/ColorButton";
+import { ColorPickerPopup } from "../color/ColorPickerPopup";
 import "./ControlsSidebar.css";
 
 export class ControlsSidebar extends React.Component<
