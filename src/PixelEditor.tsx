@@ -5,6 +5,8 @@ import { PixelGrid } from "./PixelGrid";
 import { ControlsSidebar, ControlValues } from "./ControlsSidebar";
 import { boundMethod } from "autobind-decorator";
 
+import "./PixelEditor.css";
+
 export class PixelEditor extends React.Component<
   PixelEditorProps,
   PixelEditorState
@@ -21,13 +23,14 @@ export class PixelEditor extends React.Component<
 
   render() {
     return (
-      <div className="app-container">
+      <div className="PixelEditor">
         <ControlsSidebar
           rows={this.state.rows}
           cols={this.state.cols}
+          color={this.state.color}
           onChange={(vals) => this.handleValuesChange(vals)}
         />
-        <Konva.Stage className="pixel-canvas" width={1000} height={900}>
+        <Konva.Stage className="PixelCanvas" width={1000} height={900}>
           <Konva.Layer>
             <PixelGrid
               rows={this.state.rows}
@@ -49,7 +52,7 @@ interface PixelEditorState {
   cols: number;
   pixelWidth: number;
   pixelHeight: number;
-  color: string | undefined;
+  color: string;
 }
 
 const DEFAULT_STATE: PixelEditorState = {
@@ -57,5 +60,5 @@ const DEFAULT_STATE: PixelEditorState = {
   cols: 16,
   pixelWidth: 50,
   pixelHeight: 50,
-  color: undefined,
+  color: "#000000",
 };
