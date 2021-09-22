@@ -1,4 +1,13 @@
+import { immerable } from "immer";
+
 export class ColoredGrid {
+  [immerable] = true;
+  private matrix: Pixel[][] = [];
+
+  constructor(rows: number, cols: number) {
+    this.updateSize(rows, cols);
+  }
+
   updateSize(rows: number, cols: number) {
     // Initialize new rows and columns
     for (let row = 0; row < rows; row++) {
@@ -17,9 +26,6 @@ export class ColoredGrid {
       }
     }
   }
-  constructor(rows: number, cols: number) {
-    this.updateSize(rows, cols);
-  }
 
   getPixelAt(row: number, col: number): Pixel {
     return this.matrix[row][col];
@@ -28,8 +34,6 @@ export class ColoredGrid {
   updatePixelAt(row: number, col: number, color?: string) {
     this.getPixelAt(row, col).color = color;
   }
-
-  private matrix: Pixel[][] = [];
 }
 
 export interface Pixel {

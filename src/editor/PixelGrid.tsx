@@ -1,66 +1,66 @@
-import React from "react";
+import { useCallback, useRef, useState } from "react";
 import * as Konva from "react-konva";
+import { useImmer } from "use-immer";
 import { ColoredGrid, Pixel } from "./ColoredGrid";
 
-export class PixelGrid extends React.Component<PixelGridProps, PixelGridState> {
-  constructor(props: PixelGridProps) {
-    super(props);
-    this.state = {
-      grid: new ColoredGrid(props.rows, props.cols),
-      isPainting: false,
-    };
-  }
+export function PixelGrid(props: Props) {
+  const [canvasConfig, setCanvasConfig] = useState({
+    width: 1000,
+    height: 1000,
+  });
+  const [grid, setGrid] = useImmer(new ColoredGrid(props.rows, props.cols));
+  const isPainting = useRef(false);
 
-  render() {
-    this.state.grid.updateSize(this.props.rows, this.props.cols);
+  const colorPixel = useCallback(
+    (row: number, col: number) => {
+      setGrid((draftGrid) => {
+        draftGrid.updatePixelAt(row, col, props.brushColor);
+      });
+    },
+    [setGrid, props.brushColor]
+  );
 
-    return (
-      <Konva.Stage
-        className="PixelCanvas"
-        width={1000}
-        height={900}
-        onMouseDown={() => this.setState({ isPainting: true })}
-        onMouseUp={() => this.setState({ isPainting: false })}
-      >
-        <Konva.Layer>{this.renderPixels()}</Konva.Layer>
-      </Konva.Stage>
-    );
-  }
+  grid.updateSize(props.rows, props.cols);
 
-  renderPixels() {
-    const renderedPixels: JSX.Element[] = [];
-
-    for (let row = 0; row < this.props.rows; row++) {
-      for (let col = 0; col < this.props.cols; col++) {
-        const pixel: Pixel = this.state.grid.getPixelAt(row, col);
-        renderedPixels.push(
-          <Konva.Rect
-            x={col * this.props.pixelWidth + 1}
-            y={row * this.props.pixelHeight + 1}
-            width={this.props.pixelWidth}
-            height={this.props.pixelHeight}
-            fill={pixel.color}
-            stroke="black"
-            onClick={() => this.colorPixel(row, col)}
-            onMouseMove={() => {
-              if (this.state.isPainting) {
-                this.colorPixel(row, col);
-              }
-            }}
-          />
-        );
-      }
+  const renderedPixels: JSX.Element[] = [];
+  for (let row = 0; row < props.rows; row++) {
+    for (let col = 0; col < props.cols; col++) {
+      const pixel: Pixel = grid.getPixelAt(row, col);
+      const width = props.pixelWidth;
+      const height = props.pixelHeight;
+      renderedPixels.push(
+        <Konva.Rect
+          x={col * width + 1}
+          y={row * height + 1}
+          width={width}
+          height={height}
+          fill={pixel.color}
+          stroke="black"
+          onClick={() => colorPixel(row, col)}
+          onMouseMove={() => {
+            if (isPainting.current) {
+              colorPixel(row, col);
+            }
+          }}
+        />
+      );
     }
-    return renderedPixels;
   }
 
-  colorPixel(row: number, col: number) {
-    this.state.grid.updatePixelAt(row, col, this.props.brushColor);
-    this.setState({ grid: this.state.grid });
-  }
+  return (
+    <Konva.Stage
+      className="PixelCanvas"
+      width={canvasConfig.width}
+      height={canvasConfig.height}
+      onMouseDown={() => (isPainting.current = true)}
+      onMouseUp={() => (isPainting.current = false)}
+    >
+      <Konva.Layer>{renderedPixels}</Konva.Layer>
+    </Konva.Stage>
+  );
 }
 
-interface PixelGridProps {
+interface Props {
   rows: number;
   cols: number;
   pixelWidth: number;
@@ -69,6 +69,8 @@ interface PixelGridProps {
 }
 
 interface PixelGridState {
+  canvasWidth: number;
+  canvasHeight: number;
   grid: ColoredGrid;
   isPainting: boolean;
 }
