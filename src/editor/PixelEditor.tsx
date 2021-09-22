@@ -30,16 +30,13 @@ export class PixelEditor extends React.Component<
           color={this.state.color}
           onChange={(vals) => this.handleValuesChange(vals)}
         />
-        <Konva.Stage className="PixelCanvas" width={1000} height={900}>
-          <Konva.Layer>
-            <PixelGrid
-              rows={this.state.rows}
-              cols={this.state.cols}
-              pixelWidth={this.state.pixelWidth}
-              pixelHeight={this.state.pixelHeight}
-            />
-          </Konva.Layer>
-        </Konva.Stage>
+        <PixelGrid
+          rows={this.state.rows}
+          cols={this.state.cols}
+          pixelWidth={this.state.pixelWidth}
+          pixelHeight={this.state.pixelHeight}
+          brushColor={this.state.color}
+        />
       </div>
     );
   }

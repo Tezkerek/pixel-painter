@@ -25,6 +25,10 @@ export class ColoredGrid {
     return this.matrix[row][col];
   }
 
+  updatePixelAt(row: number, col: number, color?: string) {
+    this.getPixelAt(row, col).color = color;
+  }
+
   private matrix: Pixel[][] = [];
 }
 
